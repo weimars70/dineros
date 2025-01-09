@@ -7,7 +7,7 @@ import { DatabaseError } from '@domain/exceptions';
 
 @injectable()
 export class cmDAO {
-    private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.cm);
+    private db = DEPENDENCY_CONTAINER.get<IDatabase<IMain>>(TYPES.Cm);
 
     public async consultaRecaudoRCE(data: IRecaudosConsulta): Promise<IConsultarRecaudoResponse | null> {
         try {
