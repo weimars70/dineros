@@ -189,6 +189,7 @@ export const TABLAS_DINEROS = {
             valor numeric NOT NULL,
             terminal numeric NOT NULL,
             id_tipo_recaudo varchar(10) NULL,
+            estado int4,
             CONSTRAINT pk_recaudos PRIMARY KEY (id_recaudo),
             CONSTRAINT fk_recaudos_id_tipo_recaudo FOREIGN KEY (id_tipo_recaudo) REFERENCES public.tipos_recaudos(id_tipo_recaudo),
             CONSTRAINT fk_recaudos_relations_medios_p FOREIGN KEY (id_medio_pago) REFERENCES public.medios_pagos(id_medio_pago)
@@ -228,10 +229,7 @@ export const TABLAS_DINEROS = {
         db.public.none(`
         CREATE TABLE public.recaudos_recursos (
         id_recurso int4 NOT NULL,
-        id_recaudo varchar(100) NOT NULL,
-        CONSTRAINT pk_com_rec_tr_re PRIMARY KEY (id_recurso, id_recaudo),
-        CONSTRAINT fk_recursos_relations_recaudos FOREIGN KEY (id_recaudo) REFERENCES public.recaudos(id_recaudo),
-        CONSTRAINT fk_recursos_relations_recursos FOREIGN KEY (id_recurso) REFERENCES public.recursos(id_recurso)
+        id_recaudo varchar(100) NOT NULL
         );`);
     },
 

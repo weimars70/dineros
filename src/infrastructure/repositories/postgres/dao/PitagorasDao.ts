@@ -12,23 +12,24 @@ export class PitagorasDao {
     public async getDataRecaudo(idTransaccion: number): Promise<IPitagorasIn> {
         try {
             const sql = `SELECT
-                    r.fecha_hora_recaudo::date as fecha,
-                    r.terminal,
+                    r.fecha_hora_recaudo as fecha,
+                    r.terminal,r.id_medio_pago AS forma_de_pago,
                     MAX(CASE WHEN re.id_tipo_recurso = 1 THEN re.identificador_recurso END) as equipo,
                     MAX(CASE WHEN re.id_tipo_recurso = 2 THEN re.identificador_recurso END) as recibidor,
                     MAX(CASE WHEN re.id_tipo_recurso = 4 THEN re.identificador_recurso END) as numero_aprobacion,
-                    r.valor
+                    r.valor,'Aut-Dineros' as usuario
                 FROM recaudos r
                 INNER JOIN recaudos_recursos rr on rr.id_recaudo = r.id_recaudo
                 INNER JOIN recursos re on rr.id_recurso = re.id_recurso
                 WHERE r.id_recaudo = (select id_movimiento from transacciones where id_transaccion = ${idTransaccion})
                     AND re.id_tipo_recurso IN (1,2,4)
-                GROUP BY r.fecha_hora_recaudo::date, r.terminal,r.valor;`;
+                GROUP BY r.fecha_hora_recaudo, r.terminal,r.valor,r.id_medio_pago;`;
 
             const data = await this.dbDineros.one(sql);
+            console.error(':::data:::', data);
             return data;
         } catch (error) {
-            console.error(`Error al obtener datos de recaudo para la transacción ${idTransaccion}:`, error);
+            console.error(`Error al obtener datos de recaudo transacción ${idTransaccion}:`, error);
             throw new Error('Error al obtener datos de recaudo.'); // Lanzar error genérico o personalizarlo según el caso
         }
     }
@@ -76,7 +77,7 @@ export class PitagorasDao {
                 }
             });
         } catch (error: any) {
-            console.error('Error en insertPitagoras', error);
+            //console.error('Error en insertPitagoras', error);
             throw new DatabaseError(error, 'Error al insertar en dineros_recibidor');
         }
     }

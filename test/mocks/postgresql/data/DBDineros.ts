@@ -88,7 +88,7 @@ export const insertarRecaudo = (bdmen: IMemoryDb): void => {
     bdmen.public.none(`INSERT INTO public.recaudos
         (id_recaudo, id_medio_pago, fecha_hora_recaudo, valor, terminal, id_tipo_recaudo)
         VALUES
-        ('prueba217', 1, '2024-08-21 16:00:12.000000', 1000000, 1, '1-7');`);
+        ('prueba217', 1, '2024-08-21', 1000000, 1, '1-7');`);
 };
 
 export const insertarMediosPago = (bdmen: IMemoryDb): void => {
@@ -128,10 +128,19 @@ export const insertarAliadosEquipos = (bdmen: IMemoryDb): void => {
 };
 
 export const insertarTiposNovedades = (bdmen: IMemoryDb): void => {
-    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad) 
+    bdmen.public.none(`INSERT INTO novedades.tipos_novedades (tipo_novedad)
      VALUES
 	 ('Calculo Bolsillo'),
 	 ('Legalizacion'),
 	 ('Recaudo');
 `);
+};
+
+export const insertarRecaudosRecursos = (bdmen: IMemoryDb): void => {
+    bdmen.public.none(`INSERT INTO public.recaudos_recursos
+    (id_recurso,id_recaudo)
+    VALUES
+    (3,'prueba217'),
+    (4,'prueba217'),
+    (6,'prueba217');`);
 };
